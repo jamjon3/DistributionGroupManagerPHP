@@ -49,6 +49,7 @@ if (typeof jQuery !== 'undefined') {
             });
         });
         distributionGroupManager.controller('getAdGroupMembersCtrl', function ($scope, $http) {
+            // alert("Here's my group" + $rootScope.selectedGroup.label);
             $http({
                 method  : 'POST',
                 url     : 'index.php',

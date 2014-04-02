@@ -30,21 +30,22 @@ and open the template in the editor.
     <body>
         <form name="group_form" method="POST">
             <div ng-controller="distributionGroupCtrl">
-                <select id="active_group" name="group" ng-model="selectedGroup" ng-init="selectedGroup = groups[0].value" ng-options="group.value as group.label for group in groups" ng-change="change(selectedGroup)">
+                <select id="active_group" name="group" ng-model="selectedGroup" ng-options="group.value as group.label for group in groups" ng-change="change(selectedGroup)">
                      <option value="">Select Group</option>
                 </select>
+                {{selectedGroup.label}}
+                <div id="add_user_line">
+                    <label for="add_user">Add NetID: </label><input type="text" name="add_user" id="add_user" ng-model="user.name" required ng-minlength="3" ng-maxlength="10">
+                    <input type="submit" value="Add" />
+                </div>   
+                <div id="group_members" style="width: 550px; border: 1px solid black; margin: 10px; padding: 10px;" ng-controller="getAdGroupMembersCtrl"> 
+                    <span ng-repeat="member in members">
+                        <input type="checkbox" name="remove_member[]" value="{{member}}" />
+                        <span ng-controller="getAdAccountDetailsCtrl" >{{member}} ({{member_details.cn[0]}})</span>
+                    </span>
+                </div>
+                <input type="submit" value="Remove Users" />
             </div>
-            <div id="add_user_line">
-                <label for="add_user">Add NetID: </label><input type="text" name="add_user" id="add_user" ng-model="user.name" required ng-minlength="3" ng-maxlength="10">
-                <input type="submit" value="Add" />
-            </div>   
-            <div id="group_members" style="width: 550px; border: 1px solid black; margin: 10px; padding: 10px;" ng-controller="getAdGroupMembersCtrl"> 
-                <span ng-repeat="member in members">
-                    <input type="checkbox" name="remove_member[]" value="{{member}}" />
-                    <span ng-controller="getAdAccountDetailsCtrl" >{{member}} ({{member_details.cn[0]}})</span>
-                </span>
-            </div>
-            <input type="submit" value="Remove Users" />
         </form>
         <?php
             error_log("Will this show up");
