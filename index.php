@@ -39,7 +39,8 @@ and open the template in the editor.
                     <input type="submit" value="Add" />
                 </div>   
                 <div id="group_members" style="width: 550px; border: 1px solid black; margin: 10px; padding: 10px;" ng-controller="getAdGroupMembersCtrl"> 
-                    <span ng-repeat="member in members">
+                    I have {{members.length}} Members. They are:
+                    <span name="members" ng-repeat="member in members">
                         <input type="checkbox" name="remove_member[]" value="{{member}}" />
                         <span ng-controller="getAdAccountDetailsCtrl" >{{member}} ({{member_details.cn[0]}})</span>
                     </span>
