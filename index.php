@@ -37,17 +37,17 @@ and open the template in the editor.
             </div>
             {{selectedGroup}}
             <div id="add_user_line">
-                <label for="add_user">Add NetID: </label><input type="text" name="add_user" id="add_user" ng-model="user.name" required ng-minlength="3" ng-maxlength="10">
+<!--                <label for="add_user">Add NetID: </label><input type="text" name="add_user" id="add_user" ng-model="user.name" required ng-minlength="3" ng-maxlength="10">-->
+                <label for="add_user">Add NetID: </label><input type="text" name="add_user" id="add_user" ng-model="user.name" ng-minlength="3" ng-maxlength="10">
                 <input type="submit" value="Add" />
             </div>   
             <div id="group_members" style="width: 550px; border: 1px solid black; margin: 10px; padding: 10px;" ng-controller="getAdGroupMembersCtrl"> 
-                I have {{members.length}} Members. They are:
                 <span name="members" ng-repeat="member in members">
-                    <input type="checkbox" name="remove_member[]" value="{{member}}" />
-                    <span ng-controller="getAdAccountDetailsCtrl" >{{member}} ({{member_details.cn[0]}})</span>
+                    <input type="checkbox" ng-model="member.checked" name="remove_member[]" value="{{member.name}}" />
+                    {{member.name}} ({{member.details.cn[0]}})<br />
                 </span>
             </div>
-            <input type="submit" value="Remove Users" />
+            <input type="submit" value="Remove Users" ng-click="act()"/>
         </form>
         <?php
             error_log("Will this show up");

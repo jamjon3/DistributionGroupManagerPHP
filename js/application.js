@@ -72,6 +72,32 @@ if (typeof jQuery !== 'undefined') {
                     //Returning the promise object
                     return deferred.promise;
                 },
+                getAdGroupMembersWithDetails: function(selectedGroup) {
+                    //Creating a deferred object
+                    var deferred = $q.defer();
+                    $http({
+                        method  : 'POST',
+                        url     : 'index.php',
+                        // data    : $.param($scope.formData),  // pass in data as strings
+                        data: { 
+                            "service": "getAdGroupMembersWithDetails",
+                            "group": selectedGroup
+                        },
+                        headers : { 
+                            // 'Content-Type': 'application/x-www-form-urlencoded',
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        }  // set the headers so angular passing info as form data (not request payload)
+                    }).success(function(data) {
+                        //Passing data to deferred's resolve function on successful completion
+                        deferred.resolve(data);
+                    }).error(function(){
+                        //Sending a friendly error message in case of failure
+                        deferred.reject("An error occured while fetching items");
+                    });
+                    //Returning the promise object
+                    return deferred.promise;
+                },
                 getAdAccountDetails: function(member) {
                     // Creating a deferred object
                     var deferred = $q.defer();
@@ -104,6 +130,13 @@ if (typeof jQuery !== 'undefined') {
                 },
                 getMembers: function() {
                     return this.members;
+                },
+                prepForBroadcast: function(members) {
+                    this.members = members;
+                    this.broadcastItem();
+                },
+                broadcastItem: function() {
+                    $rootScope.$broadcast('handleBroadcast');
                 }
                 
             };
@@ -117,11 +150,12 @@ if (typeof jQuery !== 'undefined') {
                 $scope.error=errorMessage;
             });
             $scope.change = function(selectedGroup) {
-                alert("My selected group is "+JSON.stringify(selectedGroup));
-                distributionRepository.getAdGroupMembers(selectedGroup).then(function(data){
+                // alert("My selected group is "+JSON.stringify(selectedGroup));
+                distributionRepository.getAdGroupMembersWithDetails(selectedGroup).then(function(data){
                     $scope.members = (data.members === 0)?[]:data.members;
-                    alert(JSON.stringify($scope.members));
-                    distributionRepository.setMembers($scope.members);
+                    // alert(JSON.stringify($scope.members));
+                    distributionRepository.prepForBroadcast($scope.members);
+                    // distributionRepository.setMembers($scope.members);
                 },function(errorMessage) {
                     $scope.error=errorMessage;
                 });
@@ -129,18 +163,25 @@ if (typeof jQuery !== 'undefined') {
         });
         distributionGroupManager.controller('getAdGroupMembersCtrl', function ($scope, $http, distributionRepository) {            
             if(typeof $scope.selectedGroup !== 'undefined' && $scope.selectedGroup !== 'null') {
-                alert("Here's my group" + (typeof $scope.selectedGroup !== 'undefined')?"undefined":$scope.selectedGroup);
-                distributionRepository.getAdGroupMembers($scope.selectedGroup).then(function(data){
+                // alert("Here's my group" + (typeof $scope.selectedGroup !== 'undefined')?"undefined":$scope.selectedGroup);
+                distributionRepository.getAdGroupMembersWithDetails($scope.selectedGroup).then(function(data){
                     $scope.members = (data.members === 0)?[]:data.members;
-                    alert(JSON.stringify($scope.members));
+                    // alert(JSON.stringify($scope.members));
                 },function(errorMessage) {
                     $scope.error=errorMessage;
                 });
             } else {
                 $scope.members = [];
             }
+            $scope.act = function () {
+                var checkedItems = [];
+                angular.forEach($scope.members, function (member) {
+                    if (member.checked !== undefined && member.checked) checkedItems.push(member);
+                });
+                console.log(checkedItems);
+            };
             $scope.$on('handleBroadcast', function() {
-                $scope.message = distributionRepository.getMembers();
+                $scope.members = distributionRepository.getMembers();
             });
         });
         distributionGroupManager.controller('getAdAccountDetailsCtrl', function ($scope, $http) {
