@@ -34,7 +34,7 @@ angular.module('distributionGroupManagerApp')
                     url     : 'api/server.php',
                     // data    : $.param($scope.formData),  // pass in data as strings
                     data: { 
-                        "service": "getAdGroupMembers",
+                        "service": "getAdGroupMembersWithDetails",
                         "group": selectedGroup
                     },
                     headers : { 
@@ -81,6 +81,7 @@ angular.module('distributionGroupManagerApp')
             setMembers: function(members) {
                 this.members = members;
                 $rootScope.$broadcast('handleBroadcast');
+                // $rootScope.$emit('handleBroadcast');
             },
             getMembers: function() {
                 return this.members;

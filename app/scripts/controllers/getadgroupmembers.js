@@ -6,7 +6,7 @@ angular.module('distributionGroupManagerApp')
             alert("Here's my group" + (typeof $scope.selectedGroup !== 'undefined')?"undefined":$scope.selectedGroup);
             Adservice.getAdGroupMembers($scope.selectedGroup).then(function(data){
                 $scope.members = (data.members === 0)?[]:data.members;
-                alert(JSON.stringify($scope.members));
+                // alert(JSON.stringify($scope.members));
             },function(errorMessage) {
                 $scope.error=errorMessage;
             });
@@ -14,7 +14,8 @@ angular.module('distributionGroupManagerApp')
             $scope.members = [];
         }
         $scope.$on('handleBroadcast', function() {
-            $scope.message = Adservice.getMembers();
+            // alert("Members are :" + JSON.stringify(Adservice.getMembers()));
+            $scope.members = Adservice.getMembers();
         });      
 //    $scope.awesomeThings = [
 //      'HTML5 Boilerplate',

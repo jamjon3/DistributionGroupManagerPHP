@@ -10,10 +10,10 @@ angular.module('distributionGroupManagerApp')
             $scope.error=errorMessage;
         });
         $scope.change = function(selectedGroup) {
-            alert("My selected group is "+JSON.stringify(selectedGroup));
+            // alert("My selected group is "+JSON.stringify(selectedGroup));
             Adservice.getAdGroupMembers(selectedGroup).then(function(data){
                 $scope.members = (data.members === 0)?[]:data.members;
-                alert(JSON.stringify($scope.members));
+                // alert(JSON.stringify($scope.members));
                 Adservice.setMembers($scope.members);
             },function(errorMessage) {
                 $scope.error=errorMessage;
