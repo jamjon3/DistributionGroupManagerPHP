@@ -17,9 +17,8 @@ angular.module('distributionGroupManagerApp')
             // alert("Members are :" + JSON.stringify(Adservice.getMembers()));
             $scope.members = Adservice.getMembers();
         });      
-//    $scope.awesomeThings = [
-//      'HTML5 Boilerplate',
-//      'AngularJS',
-//      'Karma'
-//    ];
+        $scope.$on('broadcastLogin', function() {
+            // alert("Members are :" + JSON.stringify(Adservice.getMembers()));
+            $scope.login = Adservice.getLogin();
+        });      
   });

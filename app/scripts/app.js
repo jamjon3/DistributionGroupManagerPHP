@@ -8,6 +8,7 @@ angular
     'ngRoute'
   ])
   .config(function ($routeProvider) {
+      // ,$httpProvider,casInterceptor
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -16,4 +17,11 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+    // $httpProvider.interceptors.push('casInterceptor');
+    // $httpProvider.interceptors.push(casInterceptor);
   });
+//angular
+//  .module('distributionGroupManagerApp',[])  
+//  .config(function ($httpProvider) {
+//    $httpProvider.interceptors.push('casInterceptor');
+//  });  
