@@ -7,7 +7,7 @@ angular
     'ngSanitize',
     'ngRoute'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider,$locationProvider) {
       // ,$httpProvider,casInterceptor
     $routeProvider
       .when('/', {
@@ -19,6 +19,7 @@ angular
       });
     // $httpProvider.interceptors.push('casInterceptor');
     // $httpProvider.interceptors.push(casInterceptor);
+    // $locationProvider.html5Mode(true);
   });
 //angular
 //  .module('distributionGroupManagerApp',[])  

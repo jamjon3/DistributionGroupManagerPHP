@@ -1,7 +1,41 @@
 'use strict';
 
 angular.module('distributionGroupManagerApp')
-    .factory('Adservice', function($http, $q, $rootScope) {
+    .factory('Adservice', function($http, $q, $rootScope, $location) {
+        var appPath = $location.absUrl();
+        if($location.path().split("?").length > 1) {
+            alert($location.path().split("?")[1]);
+            var params = {
+                getParmStr: function(path) {
+                    if(path.split("?").length < 2) {
+                        return {};
+                    }
+                    var parmStr = path.substr(path.indexOf('?')+1);
+                    if(parmStr === path) {
+                        return {};
+                    }
+                    var parmPairs = parmStr.split("&");
+                    return $.extend.apply(null,$.map(parmStr.split("&"),function(v,i) {
+                        var kvpair = v.split("=");
+                        var obj = {};
+                        obj[kvpair[0]] = kvpair[1];
+                        return obj;
+                    }));                    
+                }
+            }.getParmStr($location.path());
+        }
+        alert(JSON.stringify(params));
+        var modifiedAppPath = appPath.match(/^[^?]+/)[1];
+        alert(modifiedAppPath);
+//        if(modifiedAppPath.slice(-2) === "#/") {
+//            alert(modifiedAppPath.slice(0,-2));
+//            // appPath = modifiedAppPath + "#/";
+//        } else {
+//            alert(modifiedAppPath);
+//            // appPath = modifiedAppPath;
+//        }
+        $rootScope.ticket = $location.search()['ticket'];
+        alert($rootScope.ticket);
         return {
             distributionGroupService: function() {
                 //Creating a deferred object
@@ -10,7 +44,10 @@ angular.module('distributionGroupManagerApp')
                     method  : 'POST',
                     url     : 'api/server.php',
                     // data    : $.param($scope.formData),  // pass in data as strings
-                    data: { "service": "AdGroupSearch" },
+                    data: { 
+                        "service": "AdGroupSearch",
+                        "ticket": $rootScope.ticket
+                    },
                     headers : { 
                         // 'Content-Type': 'application/x-www-form-urlencoded',
                         'Content-Type': 'application/json',
@@ -35,7 +72,8 @@ angular.module('distributionGroupManagerApp')
                     // data    : $.param($scope.formData),  // pass in data as strings
                     data: { 
                         "service": "getAdGroupMembersWithDetails",
-                        "group": selectedGroup
+                        "group": selectedGroup,
+                        "ticket": $rootScope.ticket
                     },
                     headers : { 
                         // 'Content-Type': 'application/x-www-form-urlencoded',
@@ -61,7 +99,8 @@ angular.module('distributionGroupManagerApp')
                     // data    : $.param($scope.formData),  // pass in data as strings
                     data: { 
                         "service": "getAdAccountDetails",
-                        "group": member
+                        "group": member,
+                        "ticket": $rootScope.ticket
                     },
                     headers : { 
                         // 'Content-Type': 'application/x-www-form-urlencoded',
@@ -86,7 +125,8 @@ angular.module('distributionGroupManagerApp')
                     url     : 'api/server.php',
                     // data    : $.param($scope.formData),  // pass in data as strings
                     data: { 
-                        "service": "isAuthorized"
+                        "service": "isAuthorized",
+                        "ticket": $rootScope.ticket
                     },
                     headers : { 
                         // 'Content-Type': 'application/x-www-form-urlencoded',

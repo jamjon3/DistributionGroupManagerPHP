@@ -21,9 +21,37 @@ angular.module('distributionGroupManagerApp')
                     if (response && response.status === 0) {
                         // alert(JSON.stringify(response));
                         var appPath = $location.absUrl();
+                        var modifiedAppPath = appPath.match(/^[^?]+/)[0];
+                        if(modifiedAppPath.slice(-2) !== "#/") {
+                            appPath = modifiedAppPath + "#/";
+                        } else {
+                            appPath = modifiedAppPath;
+                        }
+                        // alert(appPath.match(/^[^?]+/)[0]);
+                        alert(appPath);
+                        
 //                        alert($window.location.href);
 //                        alert("The login url is: "+$rootScope.login);
-                        $window.location.href = $rootScope.login + "?server=" + encodeURIComponent(appPath);
+//                        var caspath = $rootScope.login + "?service=" + encodeURIComponent(appPath.match(/^[^\#\?]+/)[0]);
+//                        var caspath = $rootScope.login + "?service=" + encodeURIComponent(appPath.match(/^[^?]+/)[0]);
+                        var caspath = $rootScope.login + "?service=" + encodeURIComponent(appPath);
+                        // var caspath = $rootScope.login + "?service=" + encodeURIComponent(appPath.match(/^[^\#\?]+/)[0] + "api/server.php");
+//                        alert(appPath.slice(0, -2));
+//                        alert(appPath.match(/^[^\#\?]+/)[0]);
+                        alert(appPath);
+                        alert(appPath.match(/^[^\#\?]+/)[0]);
+                        alert(appPath.match(/^[^?]+/)[0]);
+                        alert(caspath);
+                        $window.location.assign(caspath);
+                        alert($location.absUrl());
+                        alert(JSON.stringify($location.search()));
+                        var params = $location.search();
+                        if(params.ticket) {
+                            $rootScope.ticket = params.ticket;
+                            alert("I have a ticket! "+$rootScope.ticket);
+                        }
+                        // $window.location.href = $rootScope.login + "?service=" + encodeURIComponent(appPath);
+//                        $window.location.href = $rootScope.login + "?server=" + appPath;
                     }
                     if (response && response.status === 404) {
                         alert(response.status);
@@ -42,6 +70,12 @@ angular.module('distributionGroupManagerApp')
                 },
                 getLogin: function() {
                     return $rootScope.login;
+                },
+                setTicket: function(ticket) {
+                    $rootScope.ticket = ticket;
+                },
+                getTicket: function() {
+                    return $rootScope.ticket;
                 }
             };
     }])
